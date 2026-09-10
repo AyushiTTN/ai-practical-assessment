@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useChatContext } from '../context/ChatContext';
 import {
   addComment,
   getTicket,
@@ -17,6 +18,7 @@ import type { Status, Ticket, User } from '../types';
 
 export default function TicketDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const { setPageContext, clearPageContext } = useChatContext();
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,6 +44,20 @@ export default function TicketDetailPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (ticket) {
+      setPageContext({
+        ticketId: ticket.id,
+        ticketStatus: ticket.status,
+        lastError: statusError,
+      });
+    }
+
+    return () => {
+      clearPageContext();
+    };
+  }, [ticket, statusError, setPageContext, clearPageContext]);
 
   async function handleStatusTransition(status: Status) {
     if (!id) return;

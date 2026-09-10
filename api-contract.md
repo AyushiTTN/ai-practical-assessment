@@ -125,3 +125,45 @@ Base URL: `http://localhost:3001/api`
 **Purpose:** List seeded users (for pickers)
 
 **Response:** `User[]` (id, name, email, role)
+
+---
+
+## POST /chat
+
+**Purpose:** Get rule-based help and guidance for using the app
+
+**Request:**
+```json
+{
+  "message": "string (required, max 500)",
+  "context": {
+    "route": "string (optional)",
+    "ticketId": "string (optional)",
+    "ticketStatus": "OPEN | IN_PROGRESS | RESOLVED | CLOSED | CANCELLED (optional)",
+    "lastError": "string | null (optional)"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "reply": "string",
+  "suggestions": ["string"]
+}
+```
+
+**Error Responses:**
+- `400` — Validation failed (empty or too-long message)
+
+---
+
+## GET /chat/welcome
+
+**Purpose:** Welcome message and suggested prompts for the help chat widget
+
+**Query params:**
+- `route` (optional): current client route path
+- `ticketStatus` (optional): current ticket status when on detail page
+
+**Response:** Same shape as `POST /chat`

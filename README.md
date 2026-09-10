@@ -58,6 +58,7 @@ ai-practical-assessment/
 - Keyword search and status filter
 - Backend validation and error handling
 - 12 integration tests for state machine rules
+- In-app help chatbot (rule-based guidance for tickets, search, status flow, and errors)
 
 ## Tech Stack
 
@@ -87,7 +88,7 @@ See [api-contract.md](api-contract.md) for full endpoint documentation.
 npm test
 ```
 
-All 12 integration tests cover valid/invalid status transitions and validation errors.
+Integration tests cover valid/invalid status transitions, validation errors, and help chat responses.
 
 ## Documentation
 

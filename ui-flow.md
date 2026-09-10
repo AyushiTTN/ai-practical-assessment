@@ -44,3 +44,21 @@ flowchart LR
 - API error: red ErrorAlert with message and optional field details
 - No comments: "No comments yet."
 - Terminal status: "No further status transitions available."
+
+## Help Chat (global)
+
+1. User clicks **Help** floating button (bottom-right) on any page
+2. Chat panel opens with a welcome message and suggested prompts
+3. User types a question or clicks a suggestion chip
+4. App sends message + page context to `POST /api/chat`
+5. Assistant reply appears with new suggestion chips
+6. On ticket detail, context includes current `ticketStatus` and recent status `lastError`
+7. User can close the panel with **Close Help** or the panel header ✕
+
+```mermaid
+flowchart LR
+  open[Click Help] --> welcome[GET /chat/welcome]
+  welcome --> ask[Type or click suggestion]
+  ask --> chat[POST /chat with context]
+  chat --> reply[Show reply + suggestions]
+```
