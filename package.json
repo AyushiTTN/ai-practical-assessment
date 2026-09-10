@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev -w src/server\" \"npm run dev -w src/client\"",
+    "dev:safe": "concurrently \"npm run dev:once -w src/server\" \"npm run dev:polling -w src/client\"",
     "build": "npm run build -w src/server && npm run build -w src/client",
     "test": "npm run test -w src/server",
     "db:migrate": "npm run db:migrate -w src/server",

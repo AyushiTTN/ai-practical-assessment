@@ -26,7 +26,8 @@ npm run dev
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start backend + frontend concurrently |
+| `npm run dev` | Start backend + frontend concurrently (hot reload) |
+| `npm run dev:safe` | Start without file watchers (use if `ENOSPC` error on Linux) |
 | `npm test` | Run integration tests (12 tests) |
 | `npm run db:migrate` | Create/update database tables |
 | `npm run db:seed` | Insert sample users, tickets, comments |
@@ -89,6 +90,38 @@ npm test
 ```
 
 Integration tests cover valid/invalid status transitions, validation errors, and help chat responses.
+
+## Troubleshooting
+
+### `ENOSPC: System limit for number of file watchers reached`
+
+This happens on Linux when Cursor, Vite, and `tsx watch` use too many inotify watchers.
+
+**Option 1 — Recommended (permanent fix):**
+
+```bash
+sudo sysctl fs.inotify.max_user_watches=524288
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+```
+
+Then run `npm run dev` again.
+
+**Option 2 — Workaround (no sudo):**
+
+```bash
+npm run dev:safe
+```
+
+This starts the API without `tsx watch` and Vite with polling instead of inotify.
+
+**Option 3 — Free watchers:**
+
+- Close unused Cursor windows or other dev servers
+- Stop extra `node` / `vite` processes: `pkill -f vite; pkill -f tsx`
+
+### Port already in use
+
+If port `3001` or `5173` is busy, stop the old process or change `PORT` in `.env`.
 
 ## Documentation
 
